@@ -1,0 +1,10 @@
+# counts number of non-null records in a column
+select count(emp_no) from employees;
+
+# distinct names - inside count
+select count(distinct first_name) from employees;
+
+select count(*) from salaries where salary>=100000;
+
+select count(*) from titles where title like '%manager%';
+
