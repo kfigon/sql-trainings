@@ -1,6 +1,5 @@
-`docker container run mysql`
-
-8.0.19
+`docker run --name=mysql1 -p 3306:3306 -e MYSQL_DATABASE=mytestdb -e MYSQL_ROOT_PASSWORD=root123 -d mysql:5.7`
+`docker exec -it mysql1 mysql -u root -p`
 
 ## main components of sql syntax
 * ddl - data definition language. Creation of data
@@ -35,6 +34,11 @@
     ```sql
     GRANT type_of_persmission ON database.table_name TO 
   'username@localhost'
+    ```
+  ```sql
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
+    CREATE USER 'kamil'@'localhost' IDENTIFIED WITH mysql_native_password BY 'kamil';
+    GRANT ALL PRIVILEGES ON *.* TO 'kamil'@'localhost';
     ```
     * REVOKE - remove permissions
 * tcl - transaction control. Saving/restoring changes to DB
