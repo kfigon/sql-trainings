@@ -3,16 +3,13 @@ CREATE DATABASE IF NOT EXISTS salesdb;
 
 USE salesdb;
 
-CREATE TABLE sales(
+CREATE TABLE if not exists sales(
     purchase_number INT NOT NULL AUTO_INCREMENT,
     date_of_purchase DATE NOT NULL,
     customer_id INT,
     item_code VARCHAR(10) NOT NULL,
 
-    PRIMARY KEY(purchase_number),
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
-#                   usuwamy customera to tutaj sie tez usunie
-#   usuniecie parenta (customer) usunie dziecko, czyli sale
+    PRIMARY KEY(purchase_number)
 );
 
 CREATE TABLE customers(
@@ -20,8 +17,16 @@ CREATE TABLE customers(
   first_name VARCHAR(20) NOT NULL,
   last_name VARCHAR(20) NOT NULL,
   email_address varchar(50),
-  number_of_complaints INT
+  number_of_complaints INT DEFAULT 0
 );
+
+ALTER TABLE sales
+ADD FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE;
+#                   usuwamy customera to tutaj sie tez usunie
+#   usuniecie parenta (customer) usunie dziecko, czyli sale
+
+# ALTER TABLE sales
+# DROP FOREIGN KEY sales_ibfk_1;
 
 CREATE TABLE items(
     item_code varchar(255) primary key,
