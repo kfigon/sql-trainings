@@ -8,3 +8,16 @@ select count(*) from salaries where salary>=100000;
 
 select count(*) from titles where title like '%manager%';
 
+# same as select distinct first_name from employees
+select first_name from employees group by first_name;
+
+# group by some aggregate
+# group splits results into groups
+# always add field from group in select
+select first_name, count(first_name) as names_count from employees group by first_name;
+
+select salary, count(emp_no) as emps_with_same_salary
+from salaries
+where salary >= 80000
+group by salary
+order by salary;

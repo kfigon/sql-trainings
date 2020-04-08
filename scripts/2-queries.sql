@@ -34,3 +34,5 @@ select * from employees where hire_date > '2000-01-01';
 select distinct gender from employees;
 
 select * from employees where gender='F' order by first_name;
+
+select * from employees where gender='F' order by first_name, last_name;
