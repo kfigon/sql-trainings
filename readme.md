@@ -1,4 +1,5 @@
 `docker run --name=mysql1 -p 3306:3306 -e MYSQL_DATABASE=mytestdb -e MYSQL_ROOT_PASSWORD=root123 -d mysql:5.7`
+
 `docker exec -it mysql1 mysql -u root -p`
 
 ## main components of sql syntax
@@ -44,3 +45,15 @@
 * tcl - transaction control. Saving/restoring changes to DB
     * COMMIT - persystuje zmiany INSERT, DELETE, UPDATE. Zmiany dostepne dla innych userow
     * ROLLBACK - undo to previously commited state
+    
+    
+## Having vs where
+* where daje warunki na pojedyncze wiersze. Warunki sa nadane przed grupowaniem
+* having - where dla grup. mozna robic warunki dla funkcji agregujacych, czego where nie potrafi
+* having robi sie na grupach, reorganizuje on dane po przeprocesowaniu przez joiny i where
+
+kolejnosc wykonywania insturkcji:
+* where
+* group
+* having
+* order
