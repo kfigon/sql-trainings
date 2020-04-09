@@ -44,7 +44,7 @@
     * REVOKE - remove permissions
 * tcl - transaction control. Saving/restoring changes to DB
     * COMMIT - persystuje zmiany INSERT, DELETE, UPDATE. Zmiany dostepne dla innych userow
-    * ROLLBACK - undo to previously commited state
+    * ROLLBACK - Wycofuje ostatniego commita
     
     
 ## Having vs where
