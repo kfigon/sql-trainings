@@ -21,3 +21,10 @@ where dept_no >='d005';
 
 select * from departments_duplicate;
 
+update departments_duplicate
+set dept_name='Quality Assurance'
+where dept_name='Quality Management';
+
+# remeber about cascades!
+delete from employees
+where emp_no > 9999999;

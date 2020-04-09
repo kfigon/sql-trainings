@@ -12,7 +12,7 @@
     ``` 
     * drop `DROP TABLE customers`
     * rename `RENAME TABLE customer TO client`
-    * truncate - remove contents of table, but table exists
+    * truncate - remove contents of table, but table exists. Resets autoincrements!
     `TRUNCATE TABLE customers`
 * dml - data manipulation. Manipulation
     * select `select * FROM sales;`
