@@ -35,3 +35,30 @@ from employees e
 left join dept_manager dm on e.emp_no = dm.emp_no
 where e.last_name='Markovitch'
 #and dm.emp_no is null # prawa strona
+
+select e.first_name, e.last_name, s.salary
+from employees e
+join salaries s on e.emp_no = s.emp_no
+where s.salary > 145000;
+
+# Select the first and last name, the hire date,
+# and the job title of all employees whose first name
+# is “Margareta” and have the last name “Markovitch”.
+select e.first_name, e.last_name, e.hire_date, t.title
+from employees e
+join titles t on e.emp_no = t.emp_no
+where e.first_name='Margareta' and e.last_name='Markovitch';
+
+# cross join - will take values from certain table
+# and connect with all values from another
+# connect all, not only which matches.
+# cartesian product of values of sets
+# good for not connected tables.
+# wypisuje kombinacje
+select * from dept_manager dm
+cross join departments d;
+
+# can be done with old join syntax:
+select * from dept_manager dm, departments d;
+# or even join without join condition
+select * from dept_manager dm join departments d;
