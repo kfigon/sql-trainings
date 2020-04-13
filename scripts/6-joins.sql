@@ -62,3 +62,44 @@ cross join departments d;
 select * from dept_manager dm, departments d;
 # or even join without join condition
 select * from dept_manager dm join departments d;
+
+# kazdy z kazdym dep + (deptmanager + emplo)
+select * from departments d
+ cross join dept_manager dm
+ join employees e on dm.emp_no = e.emp_no;
+
+# average salaries of man end women in the company
+select e.gender, avg(s.salary)
+from salaries s
+join employees e on s.emp_no = e.emp_no
+group by e.gender;
+
+# names of managers, hire date, date of promotion to manager and dept name
+select e.first_name, e.last_name, e.hire_date, dm.from_date, d.dept_name
+from employees e
+join dept_manager dm on e.emp_no = dm.emp_no
+join departments d on dm.dept_no = d.dept_no;
+
+# Select all managers’ first and last name,
+# hire date, job title, start date, and department name.
+select e.first_name, e.last_name, e.hire_date, t.title, dm.from_date, d.dept_name
+from employees e
+join dept_manager dm on e.emp_no = dm.emp_no
+join titles t on e.emp_no = t.emp_no and t.from_date=dm.from_date
+join departments d on dm.dept_no = d.dept_no;
+
+# average salaries of managers in each dept
+select d.dept_name, avg(s.salary) as average_salary
+from salaries s
+join dept_manager dm on s.emp_no = dm.emp_no
+join departments d on dm.dept_no = d.dept_no
+group by d.dept_name
+having average_salary > 70000
+order by average_salary;
+
+# how many male and how many female
+# managers do we have in the ‘employees’ database?
+select e.gender, count(dm.emp_no) #count(*) to samo
+from employees e
+join dept_manager dm on e.emp_no = dm.emp_no
+group by e.gender;
