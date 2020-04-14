@@ -1,8 +1,8 @@
 # jak reuzywalna funkcja w programowaniu
 
 #stored routines:
-# - stored procedures
-# - functions - user defined and built-in (like count())
+# - stored procedures - selects or DML. return value is optional
+# - functions - only selects. Return is mandatory
 
 # to avoid confusion we need temporary set a delimiter different than ';'
 DROP PROCEDURE IF EXISTS get_thousand_employees;
