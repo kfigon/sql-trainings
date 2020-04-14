@@ -18,12 +18,12 @@ DELIMITER ;
 call get_thousand_employees();
 
 
-# check all monthly sales generated throught a calendar year
+# check summed salary for year
 # return lowest of values
-DROP PROCEDURE IF EXISTS get_average_salary_for_year;
+DROP PROCEDURE IF EXISTS get_sum_salary_for_year;
 
 DELIMITER $$
-CREATE PROCEDURE get_average_salary_for_year(IN this_year varchar(5))
+CREATE PROCEDURE get_sum_salary_for_year(IN this_year varchar(5))
 BEGIN
     select this_year, sum(salary) as sum
     from salaries
@@ -32,5 +32,23 @@ BEGIN
 END$$
 DELIMITER ;
 
-call get_average_salary_for_year('1991');
+call get_sum_salary_for_year('1991');
+
+
+# select * into
+DROP PROCEDURE IF EXISTS emp_avg_salary;
+DELIMITER $$
+CREATE PROCEDURE emp_avg_salary(IN emp_number integer, out average_salary decimal(10,2))
+BEGIN
+    select avg(s.salary) INTO average_salary
+    from salaries s
+    where s.emp_no = emp_number
+    group by s.emp_no;
+END$$
+DELIMITER ;
+
+#call emp_avg_salary(11300); zawolac z gui
+
+
+
 
