@@ -58,6 +58,7 @@ DROP FUNCTION IF EXISTS emp_avg_salary_fun;
 DELIMITER $$
 CREATE FUNCTION emp_avg_salary_fun(emp_number integer) RETURNS decimal(10,2)
 BEGIN
+    # declare - only for local variables - inside begin-end
     declare average_salary DECIMAL(10,2);
 
     select avg(s.salary) INTO average_salary
