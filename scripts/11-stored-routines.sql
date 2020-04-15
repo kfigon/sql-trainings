@@ -47,8 +47,26 @@ BEGIN
 END$$
 DELIMITER ;
 
-#call emp_avg_salary(11300); zawolac z gui
+# using output param
+SET @zmienna = 0;
+call emp_avg_salary(11300, @zmienna); # albo zawolac z gui
+select @zmienna;
 
+# funkcje:
+DROP FUNCTION IF EXISTS emp_avg_salary_fun;
 
+DELIMITER $$
+CREATE FUNCTION emp_avg_salary_fun(emp_number integer) RETURNS decimal(10,2)
+BEGIN
+    declare average_salary DECIMAL(10,2);
 
+    select avg(s.salary) INTO average_salary
+    from salaries s
+    where s.emp_no = emp_number
+    group by s.emp_no;
 
+    return average_salary;
+END$$
+DELIMITER ;
+
+select emp_avg_salary_fun(11300);
