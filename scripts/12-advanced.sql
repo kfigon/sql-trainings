@@ -35,6 +35,7 @@ select first_name, last_name,
        if(gender = 'M', 'Male', 'Female') as gender
 from employees;
 
+# can be problematic with null and not null, keep in mind!
 select
     salary,
     CASE
