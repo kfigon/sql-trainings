@@ -2,6 +2,8 @@
 
 `docker exec -it mysql1 mysql -u root -p`
 
+execute employees.sql in DB
+
 ## main components of sql syntax
 * ddl - data definition language. Creation of data
     * create statement: `CREATE TABLE name (colname type);`
