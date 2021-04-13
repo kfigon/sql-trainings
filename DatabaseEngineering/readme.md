@@ -54,5 +54,8 @@ levels implemented by DB to fix read phenomenas
 Sees committed stuff at the beginning of the transaction (not by each query!). **We can see changes committed BEFORE this transaction**   
 * **serialized** - transactions are serialized. SLOW!
 
+![isolation](isolation.png)
+
+
 ### Consistency 
 ### Durability
