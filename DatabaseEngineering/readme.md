@@ -58,10 +58,23 @@ Sees committed stuff at the beginning of the transaction (not by each query!). *
 
 
 ### Consistency 
-* all constraints on tables are still obligatory
-* update X, read X - always get the same data as you wrote it. 
+* `consistency in data` - all constraints on tables are still obligatory
+* `consistency in reads` - update X, read X - always get the same data as you wrote it. 
     * opposite - NoSQL got `eventual consistency` - reads are not always 100% correct, but they will be in future. (data replication propagation, network latency etc.)
-* horizontal scaling might screw this property
+    * horizontal scaling might screw this property
+
+#### eventual consistency
+
 
 ### Durability
 * persistency on non-volatile storage
+
+
+## Normalization
+https://en.wikipedia.org/wiki/Database_normalization
+
+way to keep data independent of another. Summarize in 
+**does this column really belong to this table?**
+
+Sometimes we violate this for peformance.
+
