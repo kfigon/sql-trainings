@@ -132,3 +132,30 @@ now we'll have an index only scan (sweet!)
 
 on ... - what we're searching for, include - what we're selecting
 
+-----------------------
+```
+create table test (
+    a int,
+    b int,
+    c int
+);
+
+create index on test(a);
+create index on test(b);
+```
+* `explain analyze select c from test where a = 70;` - bitmap index scan (a_idx). We need to jump to table (jump to heap) to pull c
+* `explain analyze select c from test where b = 70;` - bitmap index scan (b_idx)
+* `explain analyze select c from test where a=50 and b = 70;` - 2x parallel bitmap index scans (a_idx and on b_idx)
+* `explain analyze select c from test where a=50 or b = 70;` - 2x parallel bitmap index scans (a_idx and on b_idx), but longer, because or queries more data
+
+now drop these idxs and **create composite**
+
+`create index on test(a,b);`
+
+* `explain analyze select c from test where a = 70;` - as before
+* `explain analyze select c from test where b = 70;` - parallel sequence scan! Idx on both is not faster, just on the left side (postgres). NO INDEX is used
+* `explain analyze select c from test where a=50 and b = 70;` - super fast index scan
+* `explain analyze select c from test where a=50 or b = 70;` - no index, parallel index scan
+
+additional index on b will help with two slow queries, no penalty on others
+
