@@ -16,3 +16,8 @@ CREATE TABLE pet (
 DESCRIBE pet;
 insert into pet (name,age) values ('fafik',5);
 ```
+
+mass populate table (postgres):
+```
+insert into temperatures(t) select random()*100 from generate_series(0,100000);
+```

@@ -70,7 +70,7 @@ Sees committed stuff at the beginning of the transaction (not by each query!). *
 * persistency on non-volatile storage
 
 
-## Normalization
+# Normalization
 https://en.wikipedia.org/wiki/Database_normalization
 
 way to keep data independent of another. Summarize in 
@@ -78,3 +78,18 @@ way to keep data independent of another. Summarize in
 
 Sometimes we violate this for peformance.
 
+# Indexing
+
+structure that makes queries faster. Inserts (or updates on indexed column) are slower.
+
+2 types of indexes - `b tree` and `LSM tree`
+
+`explain analyze select * from employees where id = 2000;`
+will give us some info about the query, analyzing performance. Sequential scan (full table scan) - super slow, one by one
+
+execute the query 2 times - cache will get involved (db or ssd cache), so it's faster.
+
+primary key is always indexed by default. By hand:
+`create index employees_name on employees(name);`
+
+`like '%asd%;` queries are always slow, even when indexed
