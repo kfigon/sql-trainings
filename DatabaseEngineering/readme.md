@@ -93,3 +93,42 @@ primary key is always indexed by default. By hand:
 `create index employees_name on employees(name);`
 
 `like '%asd%;` queries are always slow, even when indexed
+
+### explain - info about query (estimations)
+* read the output from most indented directive
+* seq scan (full table scan) - full table, row by row
+* cost - how many ms took to fetch first and all rows. Sometimes we need lot of calculations before starting fetching
+* rows - aproximation how many rows will be fetched - can be used instead of count(*)
+* width of selected - in bytes (might be average)
+* index scan - use index to speed up the process
+* index only scan - no table fetch, pure index
+* bitmap index scan - combination of idx scan and index scan. Might slow down everything, doubling the work
+
+### explain analyze - does actual query, no estimation
+
+## indexing
+
+table:
+```
+create table grades (
+    id long primary key,
+    name varchar(30),
+    g integer
+);
+
+create index g_idx on grades(g);
+select name from grades where g = 30;
+```
+
+This will be **slower** than the same query without idx!!! We still need to go through index AND table! We filtered through g (index), and selected names (actual table). Here even full table scan would be better.
+
+note: where id = someID - this will be fast (index scan), even if we fetch something outside the idx
+
+We can create an index on non key columns to fix it. 
+Index on data that is frequently fetched with a query. This will increase size of index of course
+`create index g_idx on grades (g) include (name);`
+
+now we'll have an index only scan (sweet!)
+
+on ... - what we're searching for, include - what we're selecting
+
