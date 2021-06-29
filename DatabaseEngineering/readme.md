@@ -82,7 +82,7 @@ Sometimes we violate this for peformance.
 
 structure that makes queries faster. Inserts (or updates on indexed column) are slower.
 
-2 types of indexes - `b tree` and `LSM tree`
+2 types of indexes - **b tree** and **LSM tree**
 
 `explain analyze select * from employees where id = 2000;`
 will give us some info about the query, analyzing performance. Sequential scan (full table scan) - super slow, one by one
@@ -96,13 +96,14 @@ primary key is always indexed by default. By hand:
 
 ### explain - info about query (estimations)
 * read the output from most indented directive
-* seq scan (full table scan) - full table, row by row
+* **seq scan** (full table scan) - full table, row by row
+* **index scan** - use index to speed up the process
+* index only scan - no table fetch, pure index
+* **bitmap index scan** - combination of seq scan and index scan. Might slow down everything, doubling the work
 * cost - how many ms took to fetch first and all rows. Sometimes we need lot of calculations before starting fetching
 * rows - aproximation how many rows will be fetched - can be used instead of count(*)
 * width of selected - in bytes (might be average)
-* index scan - use index to speed up the process
-* index only scan - no table fetch, pure index
-* bitmap index scan - combination of idx scan and index scan. Might slow down everything, doubling the work
+
 
 ### explain analyze - does actual query, no estimation
 
@@ -122,7 +123,7 @@ select name from grades where g = 30;
 
 This will be **slower** than the same query without idx!!! We still need to go through index AND table! We filtered through g (index), and selected names (actual table). Here even full table scan would be better.
 
-note: where id = someID - this will be fast (index scan), even if we fetch something outside the idx
+note: where id = someID - this will be fast (index scan), even if we fetch something outside the idx. Also, optimizer might choose different thing
 
 We can create an index on non key columns to fix it. 
 Index on data that is frequently fetched with a query. This will increase size of index of course
@@ -159,3 +160,22 @@ now drop these idxs and **create composite**
 
 additional index on b will help with two slow queries, no penalty on others
 
+## create index on a prod DB that's running
+
+writes will be blocked during creation. Postgres allows to do:
+
+`create index concurrently g on test(a);` - won't block writes during index creation. But takes way more time and resources during creation.
+
+# bloom filters
+
+problem - does this username exist. select query even with index is slow for huge load. Bloom filter allow to check it faster - implementation is the same as hashmap<string,boolean> (hash % array len == 1) if it's true - go to the DB and check if it's actually there (hash conflicts). if false - 100% certain that username does not exist.
+
+# working with bilion row tables
+
+* chunk table and search in parallel
+* avoid processing entire table, process subset - use an index
+    * reduce further - partitioning (horizontal - slice table in half on the same disk), and use partition key (partition index) to know where to search. DB will handle that
+    * reduce further - sharding - distribute to different hosts (further partitioning), but transactions might be problem
+* avoid having such huge table - e.g. twitter followers - have a count in main table, instead of relation. Cache the thing in other table
+
+# partitioning
