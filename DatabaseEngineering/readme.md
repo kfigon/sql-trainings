@@ -204,7 +204,7 @@ insert into grades_parts select * from grades;
 ```
 
 ## partitioning vs sharding
-* partitioning splits the table into multiple tables in the same DB, client is agnostic. DB manages everything, queries don't change
+* partitioning splits the table into multiple tables in the same DB, client is agnostic. DB manages everything, queries don't change. Schema might change in case of vertical partitioning
 * sharind splits the table into multiple tables across multiple DB servers. Client must be aware of shard, different connection url must be used
 
 ## horizontal partitioning
@@ -213,7 +213,7 @@ default partition when we talk about the thing. Split partitions by rows (range,
 
 ## vertical partitioning
 
-rarely used. Split it by columns. Useful when we have a large column (blob) and want to have it in separate place
+rarely used. Split it by columns. Useful when we have a large column (blob) and want to have it in separate place. Schema might change
 
 ## pros and cons
 pros
@@ -226,3 +226,23 @@ cons
 * queries that require full scan are slower (range queries, reports)
 * schema changes might be challenging
 
+# Sharding
+
+way to split data (huge tables) to multiple servers - instances of the DB.
+We need to track where to look for a particular data.
+
+* no particular RDBMS mechanism for that - we need to do that by hand
+* In application we need mapping for that
+* `consistent hashing` - use hashmap<string, url> (dbIdx = hash(data) % numOfNodes)
+* sharding is usually the last thing we should do - it's hard
+
+pros:
+* scalability
+* security (separate credentials)
+* smaller indexes - performance
+cons:
+* complex client (app) - needs to know about sharding
+* rollbacks
+* transactions
+* schema changes
+* joins
