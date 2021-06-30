@@ -182,14 +182,47 @@ problem - does this username exist. select query even with index is slow for hug
 
 split huge table into multiple tables and let the DB to figure out how to access it. We can then query just a sample of huge table - work with smaller set of data
 
-* partitioning vs sharding - 
+demo - we need to create ranges by hand (including indexes!)
+```
+create table grades (id serial not null, g int not null);
+
+--... after some time...
+create table grades_parts (id serial not null, g int not null) partition by range(g);
+
+create table g0035 (id serial not null, g int not null);
+create table g3560 (id serial not null, g int not null);
+create table g6080 (id serial not null, g int not null);
+create table g80100 (id serial not null, g int not null);
+
+alter table grades_parts attach partition g0035 for values from (0) to (35);
+alter table grades_parts attach partition g3560 for values from (35) to (60);
+alter table grades_parts attach partition g6080 for values from (60) to (80);
+alter table grades_parts attach partition g80100 for values from (80) to (100);
+
+-- populate
+insert into grades_parts select * from grades;
+```
+
+## partitioning vs sharding
+* partitioning splits the table into multiple tables in the same DB, client is agnostic. DB manages everything, queries don't change
+* sharind splits the table into multiple tables across multiple DB servers. Client must be aware of shard, different connection url must be used
 
 ## horizontal partitioning
 
-default partition when we talk about the thing. Split partitions by rows (range or list - "this thing is in this table etc."). Visually - split table horizontally with laser
+default partition when we talk about the thing. Split partitions by rows (range, list, hash - way to say "this thing is in this table etc."). Visually - split table horizontally with laser
 
 ## vertical partitioning
 
 rarely used. Split it by columns. Useful when we have a large column (blob) and want to have it in separate place
 
 ## pros and cons
+pros
+* performance
+* smaller problem set
+* easy bulk loading
+* archive old data
+cons
+* updates are harder and might be slower
+* queries that require full scan are slower (range queries, reports)
+* schema changes might be challenging
+
