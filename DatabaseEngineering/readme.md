@@ -228,7 +228,7 @@ cons
 
 # Sharding
 
-way to split data (huge tables) to multiple servers - instances of the DB.
+Way to split data (huge tables) to multiple servers - instances of the DB.
 We need to track where to look for a particular data.
 
 * no particular RDBMS mechanism for that - we need to do that by hand
