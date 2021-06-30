@@ -33,12 +33,12 @@ isolation - can my transaction see changes made by other transactions?
 
 #### read phenomena
 * **dirty reads** - we see **uncommitted** changes made by other transactions. This can be rolled-back. SOmetimes we don't want exact number of stuff (instagram likes)
-![dirty](dirtyread.png)
+![dirty](acid/dirtyread.png)
 * **non-repeatable reads** - read some value, but when did it again within the same transaction - got different result. Other transaction changed that - and committed!
 Same as before, but committed
-![NRR](non-repeatable.png)
+![NRR](acid/non-repeatable.png)
 * **phantom reads** - other transaction inserted a row in case of double read. 
-![phantom](phantom.png)
+![phantom](acid/phantom.png)
 
 additionally:
 
@@ -54,7 +54,7 @@ levels implemented by DB to fix read phenomenas
 Sees committed stuff at the beginning of the transaction (not by each query!). **We can see changes committed BEFORE this transaction**   
 * **serialized** - transactions are serialized. SLOW!
 
-![isolation](isolation.png)
+![isolation](acid/isolation.png)
 
 
 ### Consistency 
@@ -179,3 +179,17 @@ problem - does this username exist. select query even with index is slow for hug
 * avoid having such huge table - e.g. twitter followers - have a count in main table, instead of relation. Cache the thing in other table
 
 # partitioning
+
+split huge table into multiple tables and let the DB to figure out how to access it. We can then query just a sample of huge table - work with smaller set of data
+
+* partitioning vs sharding - 
+
+## horizontal partitioning
+
+default partition when we talk about the thing. Split partitions by rows (range or list - "this thing is in this table etc."). Visually - split table horizontally with laser
+
+## vertical partitioning
+
+rarely used. Split it by columns. Useful when we have a large column (blob) and want to have it in separate place
+
+## pros and cons
