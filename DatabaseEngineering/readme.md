@@ -240,6 +240,7 @@ pros:
 * scalability
 * security (separate credentials)
 * smaller indexes - performance
+
 cons:
 * complex client (app) - needs to know about sharding
 * rollbacks
