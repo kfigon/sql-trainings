@@ -247,3 +247,33 @@ cons:
 * transactions
 * schema changes
 * joins
+
+# Concurrency
+
+* exclusive lock - I can be only connection that's allowed to read/write that column/row.
+* shared lock - I want to read a row/column and I want to be sure that nobody writes to that.
+
+if there's a lock obtained - on there cant be other lock (the second type).
+
+Good for e.g. configuration DB - you dont want people to read stale config. Everybody out, after I'm done they can do their stuff.
+
+`watch out for deadlocks!` - 2 processes fight for the resource, one waits for another to release the lock.
+
+transactions use locks inside. This is just a lower level mechanism.
+
+## 2 phase locking
+
+acquiring lock and release - **double booking problem**
+
+book the same exact same seat at exact same milisecond by updating the same row. Use lock:
+
+```
+begin transaction;
+
+-- exclusive lock on that row. Other users will block and see update data here.
+select * from seats where id = 14 for update; 
+
+update seats set booked = true, name ='Jacek' where id = 14;
+
+commit; -- commit releasing the lock
+```
