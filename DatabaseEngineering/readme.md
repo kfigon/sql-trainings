@@ -83,6 +83,8 @@ Sometimes we violate this for peformance.
 structure that makes queries faster. Inserts (or updates on indexed column) are slower.
 
 2 types of indexes - **b tree** and **LSM tree**
+* b trees might be slow when inserting (rebalancing trees)
+* lsm are good for lots of inserts, faster in such cases
 
 `explain analyze select * from employees where id = 2000;`
 will give us some info about the query, analyzing performance. Sequential scan (full table scan) - super slow, one by one
