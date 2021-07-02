@@ -82,7 +82,7 @@ Sometimes we violate this for peformance.
 
 structure that makes queries faster. Inserts (or updates on indexed column) are slower.
 
-2 types of indexes - **b tree** and **LSM tree**
+2 types of indexes - **b tree** and **LSM tree**. Type of index is based on database engine underneath the DB.
 * b trees might be slow when inserting (rebalancing trees)
 * lsm are good for lots of inserts, faster in such cases
 
