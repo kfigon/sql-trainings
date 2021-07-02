@@ -284,5 +284,18 @@ commit; -- commit releasing the lock
 
 # DB replication
 
+* master/backup replication - client write to master, DB updates all replicas
+* multi-master replication. Conflict resolution
 
+synchronous replication - all replication calls are done in single thread, client needs to wait
+
+async - all replication calls are deferred, client does not need to wait for all replica updates
+
+pros:
+* horizontal scaling
+* we can regionalize DBs (at least reads)
+cons:
+* eventual consistency
+* slow write in synchronous
+* complex in case of multimaster
 
