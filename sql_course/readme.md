@@ -2,7 +2,11 @@
 
 `docker exec -it mysql1 mysql -u root -p`
 
-execute employees.sql in DB
+execute employees.sql in DB:
+```
+cat ./employees.sql | docker exec -i mysql1 mysql -u root -p
+
+```
 
 ## main components of sql syntax
 * ddl - data definition language. Creation of data
