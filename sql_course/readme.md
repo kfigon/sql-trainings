@@ -1,4 +1,4 @@
-`docker run --name=mysql1 -p 3306:3306 -e MYSQL_DATABASE=mytestdb -e MYSQL_ROOT_PASSWORD=root123 -d mysql:5.7`
+`docker run --name=mysql1 -p 3306:3306 -e MYSQL_DATABASE=mytestdb -e MYSQL_ROOT_PASSWORD=root123 -d mysql:8`
 
 `docker exec -it mysql1 mysql -u root -proot123`
 
