@@ -70,3 +70,13 @@ select sum(case when highes_contract_of_females.salary > avg_salary.avg_salary_v
 from highes_contract_of_females
 cross join avg_salary;
 
+# get highest contract salary values for each employee hired in 2000 or later
+with hired_in as (select emp_no from employees where hire_date > '2000-01-01'),
+highest_salary as (
+    select s.emp_no, s.salary, row_number() over (partition by s.emp_no order by s.salary desc) as rn
+    from salaries s
+    join hired_in hi on s.emp_no = hi.emp_no
+)
+select emp_no, salary
+from highest_salary
+where rn = 1;
