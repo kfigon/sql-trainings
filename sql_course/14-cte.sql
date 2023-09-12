@@ -55,4 +55,18 @@ highes_contract_of_females as (
 select count(*)
 from highes_contract_of_females
 cross join avg_salary
-where highes_contract_of_females.salary > avg_salary.avg_salary_val
+where highes_contract_of_females.salary > avg_salary.avg_salary_val;
+
+# same, but with info
+with avg_salary as (select avg(salary) as avg_salary_val from salaries),
+highes_contract_of_females as (
+ select e.emp_no, max(s.salary) as salary
+ from employees e
+join salaries s on e.emp_no = s.emp_no and e.gender = 'F'
+ group by e.emp_no
+)
+select sum(case when highes_contract_of_females.salary > avg_salary.avg_salary_val then 1 else 0 end) as avg,
+       count(*) as total_female
+from highes_contract_of_females
+cross join avg_salary;
+
